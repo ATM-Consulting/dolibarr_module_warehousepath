@@ -1,0 +1,11 @@
+.grid-row {
+	display:flex;
+	
+}
+.grid-cell {
+	border-collapse: collapse;
+	border:1px solid #ccc;
+	width:30px;
+	height:30px;
+	
+}

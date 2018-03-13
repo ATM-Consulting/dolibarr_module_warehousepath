@@ -69,13 +69,13 @@ function warehousepath_prepare_head(Twarehousepath $object)
     $head[$h][1] = $langs->trans("warehousepathCard");
     $head[$h][2] = 'card';
     $h++;
-	
+
 	// Show more tabs from modules
     // Entries must be declared in modules descriptor with line
     // $this->tabs = array('entity:+tabname:Title:@warehousepath:/warehousepath/mypage.php?id=__ID__');   to add new tab
     // $this->tabs = array('entity:-tabname:Title:@warehousepath:/warehousepath/mypage.php?id=__ID__');   to remove a tab
     complete_head_from_modules($conf,$langs,$object,$head,$h,'warehousepath');
-	
+
 	return $head;
 }
 
@@ -102,4 +102,23 @@ function getFormConfirmwarehousepath(&$PDOdb, &$form, &$object, $action)
     }
 
     return $formconfirm;
+}
+
+function showMap($cols = 20, $row = 20) {
+
+    $TMap = warehousepath::getMap();
+
+    for($i = 0; $i<$row; $i++) {
+        echo '<div class="grid-row">';
+        for($j = 0; $j<$cols; $j++) {
+            echo '<div class="grid-cell" col="'.$j.'" row="'.$i.'" ';
+            if(isset($TMap[$i][$j])) {
+                echo 'fk-warehouse="'.$TMap[$i][$j]->fk_warehouse.'" ';
+            }
+            echo ' ></div>';
+
+        }
+        echo '</div>';
+    }
+
 }

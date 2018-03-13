@@ -10,12 +10,10 @@ if(!defined('INC_FROM_DOLIBARR')) {
 
 }
 
-
-/* uncomment
-
+global $db;
 
 dol_include_once('/warehousepath/class/warehousepath.class.php');
 
-$o=new Twarehousepath($db);
+$o=new warehousepath($db);
 $o->init_db_by_vars();
-*/
+
