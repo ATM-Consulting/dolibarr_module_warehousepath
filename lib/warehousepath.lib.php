@@ -103,22 +103,3 @@ function getFormConfirmwarehousepath(&$PDOdb, &$form, &$object, $action)
 
     return $formconfirm;
 }
-
-function showMap($cols = 20, $row = 20) {
-
-    $TMap = warehousepath::getMap();
-
-    for($i = 0; $i<$row; $i++) {
-        echo '<div class="grid-row">';
-        for($j = 0; $j<$cols; $j++) {
-            echo '<div class="grid-cell" col="'.$j.'" row="'.$i.'" ';
-            if(isset($TMap[$i][$j])) {
-                echo 'fk-warehouse="'.$TMap[$i][$j]->fk_warehouse.'" ';
-            }
-            echo ' ></div>';
-
-        }
-        echo '</div>';
-    }
-
-}

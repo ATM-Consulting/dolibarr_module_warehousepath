@@ -1,19 +1,37 @@
 /* map.js */
+
 $(document).ready(function() {
 
 	$('div.grid-cell').click(function() {
 		
 		$item = $(this);
 		
-		var fk_wh = parseInt($item.attr('fk-warehouse'));
-		if(isNaN(fk_wh))fk_wh = 0;
+		var is_block = parseInt($item.attr('im-a-block'));
+		if(isNaN(is_block))is_block = 0;
 		
-		if(fk_wh == 0) {
-			$item.attr('fk-warehouse',1);
+		if(is_block == 0) {
+			$item.attr('im-a-block',1);
 		}
-		else {
-			$item.attr('fk-warehouse',0);
+		else if(is_block == 1) {
+			$item.attr('im-a-block',0);
 		} 
+		
+		$.ajax({
+			url:"script/interface.php"
+			,data:{
+					put:'set-block'
+					,fk_warehouse:fk_warehouse
+					,col:$item.attr('col')
+					,row:$item.attr('row')
+					,is_block:$item.attr('im-a-block')
+			}
+			
+		}).done(function(data) {
+			
+		});
+		
+		
+		
 		
 		drawCells();
 		
@@ -30,10 +48,10 @@ function drawCells() {
 		
 		$item = $(item);
 		
-		var fk_wh = parseInt($item.attr('fk-warehouse'));
-		if(isNaN(fk_wh))fk_wh = 0;
+		var is_block = parseInt($item.attr('im-a-block'));
+		if(isNaN(is_block))is_block = 0;
 		
-		if(fk_wh == 0) {
+		if(is_block == 0) {
 			$item.css('background-color','#fff');
 		}
 		else {
