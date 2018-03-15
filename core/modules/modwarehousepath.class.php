@@ -46,7 +46,7 @@ class modwarehousepath extends DolibarrModules
 
 		$this->editor_name = 'ATM-Consulting';
 		$this->editor_url = 'https://www.atm-consulting.fr';
-		
+
 		// Id for module (must be unique).
 		// Use here a free id (See in Home -> System information -> Dolibarr for list of used modules id).
 		$this->numero = 104062; // 104000 to 104999 for ATM CONSULTING
@@ -70,7 +70,7 @@ class modwarehousepath extends DolibarrModules
 		// If file is in theme/yourtheme/img directory under name object_pictovalue.png, use this->picto='pictovalue'
 		// If file is in module/img directory under name object_pictovalue.png, use this->picto='pictovalue@module'
 		$this->picto='warehousepath@warehousepath';
-		
+
 		// Defined all module parts (triggers, login, substitutions, menus, css, etc...)
 		// for default path (eg: /warehousepath/core/xxxxx) (0=disable, 1=enable)
 		// for specific path of parts (eg: /warehousepath/core/modules/barcode)
@@ -140,7 +140,8 @@ class modwarehousepath extends DolibarrModules
 		// 'thirdparty'       to add a tab in third party view
 		// 'user'             to add a tab in user view
         $this->tabs = array(
-            'stock:+map:Map:warehousepath@warehousepath:$user->rights->warehousepath->read:/warehousepath/map.php?fk_warehouse=__ID__',  	// To add a new tab identified by code tabname1
+            'stock:+map:Map:warehousepath@warehousepath:$user->rights->warehousepath->read:/warehousepath/map.php?fk_warehouse=__ID__'  	// To add a new tab identified by code tabname1
+            ,'product:+map:Map:warehousepath@warehousepath:$user->rights->warehousepath->read:/warehousepath/map.php?fk_product=__ID__'  	// To add a new tab identified by code tabname1
         );
 
         // Dictionaries
@@ -191,7 +192,7 @@ class modwarehousepath extends DolibarrModules
 		$this->rights[$r][4] = 'read';				// In php code, permission will be checked by test if ($user->rights->permkey->level1->level2)
 		$this->rights[$r][5] = '';				// In php code, permission will be checked by test if ($user->rights->permkey->level1->level2)
 		$r++;
-		
+
 		$this->rights[$r][0] = $this->numero . $r;	// Permission id (must not be already used)
 		$this->rights[$r][1] = 'warehousepath_write';	// Permission label
 		$this->rights[$r][3] = 1; 					// Permission by default for new user (0/1)
@@ -235,9 +236,9 @@ class modwarehousepath extends DolibarrModules
 		//							'target'=>'',
 		//							'user'=>2);				                // 0=Menu for internal users, 1=external users, 2=both
 		// $r++;
-		
+
 /*
-		$this->menu[$r]=array(	
+		$this->menu[$r]=array(
 			'fk_menu'=>0,			                // Put 0 if this is a top menu
 			'type'=>'top',			                // This is a Top menu entry
 			'titre'=>$langs->trans('TopMenuwarehousepath'),
@@ -268,7 +269,7 @@ class modwarehousepath extends DolibarrModules
 			'user'=>2
 		);
 		$r++;
-		
+
 		$this->menu[$r]=array(
 			'fk_menu'=>'fk_mainmenu=warehousepath,fk_leftmenu=warehousepath_left',		    // Use 'fk_mainmenu=xxx' or 'fk_mainmenu=xxx,fk_leftmenu=yyy' where xxx is mainmenucode and yyy is a leftmenucode
 			'type'=>'left',			                // This is a Left menu entry
@@ -284,7 +285,7 @@ class modwarehousepath extends DolibarrModules
 			'user'=>2
 		);				                // 0=Menu for internal users, 1=external users, 2=both
 		$r++;
-		
+
 
 		$this->menu[$r]=array(
 			'fk_menu'=>'fk_mainmenu=warehousepath,fk_leftmenu=warehousepath_left',		    // Use 'fk_mainmenu=xxx' or 'fk_mainmenu=xxx,fk_leftmenu=yyy' where xxx is mainmenucode and yyy is a leftmenucode
@@ -302,7 +303,7 @@ class modwarehousepath extends DolibarrModules
 		);				                // 0=Menu for internal users, 1=external users, 2=both
 		$r++;
 */
-		
+
 		// Exports
 		$r=1;
 
@@ -332,7 +333,7 @@ class modwarehousepath extends DolibarrModules
 	function init($options='')
 	{
 		$sql = array();
-		
+
 		define('INC_FROM_DOLIBARR',true);
 
 		dol_include_once('/warehousepath/config.php');

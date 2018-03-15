@@ -14,6 +14,6 @@ global $db;
 
 dol_include_once('/warehousepath/class/warehousepath.class.php');
 
-$o=new warehousepath($db);
+$o=new Warehousepath($db);
 $o->init_db_by_vars();
 

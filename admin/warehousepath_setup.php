@@ -59,7 +59,7 @@ if (preg_match('/set_(.*)/',$action,$reg))
 		dol_print_error($db);
 	}
 }
-	
+
 if (preg_match('/del_(.*)/',$action,$reg))
 {
 	$code=$reg[1];
@@ -104,7 +104,7 @@ print '<td>'.$langs->trans("Parameters").'</td>'."\n";
 print '<td align="center" width="20">&nbsp;</td>';
 print '<td align="center" width="100">'.$langs->trans("Value").'</td>'."\n";
 print '</tr>';
-
+/*
 // Example with a yes / no select
 $var=!$var;
 print '<tr '.$bc[$var].'>';
@@ -130,8 +130,34 @@ print '<input type="hidden" name="action" value="set_CONSTNAME">';
 print ajax_constantonoff('CONSTNAME');
 print '</form>';
 print '</td></tr>';
-
+*/
 print '</table>';
+
+print '<table class="noborder" width="100%">';
+print '<tr class="liste_titre">';
+print '<td>'.$langs->trans("Warehouse").'</td>'."\n";
+print '<td align="center" width="100">'.$langs->trans("Cols").'</td>'."\n";
+print '<td align="center" width="100">'.$langs->trans("Rows").'</td>'."\n";
+print '<td align="center" width="100">'.$langs->trans("StartPoint").'</td>'."\n";
+print '<td align="center" width="100">'.$langs->trans("EndPoint").'</td>'."\n";
+print '</tr>';
+dol_include_once('/product/stock/class/entrepot.class.php');
+$res = $db->query("SELECT rowid,cols,rows,start_point,end_point FROM ".MAIN_DB_PREFIX."entrepot");
+while($obj = $db->fetch_object($res)) {
+    $e=new Entrepot($db);
+    $e->fetch($obj->rowid);
+
+    echo '<tr class="oddeven">
+        <td>'.$e->getNomUrl(1).'</td>
+        <td>'.$obj->cols.'</td>
+        <td>'.$obj->rows.'</td>
+        <td>'.$obj->start_point.'</td>
+        <td>'.$obj->end_point.'</td>
+    </tr>';
+
+}
+print '</table>';
+
 
 llxFooter();
 
