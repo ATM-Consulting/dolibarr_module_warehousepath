@@ -62,8 +62,11 @@ class Warehousepath extends SeedObject
 
             if($obj->type == Warehousepath::PRODUCT) {
 
-                if(empty($TMap[$obj->grid_row][$obj->grid_col]->products)) $TMap[$obj->grid_row][$obj->grid_col]->products = $obj->fk_product;
-                else $TMap[$obj->grid_row][$obj->grid_col]->products .=','. $obj->fk_product;
+                if(empty($TMap[$obj->grid_row][$obj->grid_col]->products)) {
+                    $TMap[$obj->grid_row][$obj->grid_col]->products = array();
+                }
+
+                $TMap[$obj->grid_row][$obj->grid_col]->products[]= $obj->fk_product;
 
             }
 
@@ -115,6 +118,24 @@ class Warehousepath extends SeedObject
 
 	}
 
+	static function getPath(&$wh, $TIDProduct = array()) {
+
+	    global $db;
+
+	    $res = $db->query("SELECT cols,rows,start_point,end_point FROM ".MAIN_DB_PREFIX."entrepot WHERE rowid=".$wh->id);
+	    $obj = $db->fetch_object($res);
+	    if($obj->start_point) $start_point = explode(',',$obj->start_point);
+	    if($obj->end_point) $end_point = explode(',',$obj->end_point);
+	    if(empty($start_point)) $start_point = array(0,0);
+	    if(empty($end_point)) $end_point = array(0,0);
+
+        $POS=array();
+
+        //TODO product position
+
+        return array('start'=>$start_point,'end'=>$end_point, 'positions'=>$POS);
+	}
+
 	static function showMap(&$wh) {
         global $db;
 
@@ -139,7 +160,7 @@ class Warehousepath extends SeedObject
 	    $TMap[$end_point[0]][$end_point[1]]->end = true;
 
 	    for($i = 0; $i<$rows; $i++) {
-	        echo '<div class="map" fk_warehouse='.(int)$wh->id.'>';
+	        echo '<div class="map" fk_warehouse='.(int)$wh->id.' cols="'.$cols.'" rows="'.$rows.'">';
 	        echo '<div class="grid-row">';
 	        for($j = 0; $j<$cols; $j++) {
 	            echo '<div class="grid-cell" col="'.$j.'" row="'.$i.'" title="('.$i.','.$j.')" ';
@@ -153,7 +174,7 @@ class Warehousepath extends SeedObject
 	                    echo ' im-a-block="'.self::START.'" '; // non switchable block
 	                }
 	                else if(!empty($TMap[$i][$j]->products)) {
-	                    echo ' products="'.$TMap[$i][$j]->products.'" ';
+	                    echo ' products="'.implode(',', $TMap[$i][$j]->products).'" ';
 	                    echo ' im-a-block="'.self::PRODUCT.'" '; // non switchable block
 	                }
 	                else {

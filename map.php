@@ -9,8 +9,7 @@
     dol_include_once('/product/class/product.class.php');
     dol_include_once('/core/lib/product.lib.php');
 
-    llxHeader('', $langs->trans('MapWareHouse'),'','',0,0,array('/warehousepath/js/map.js'),array('/warehousepath/css/style.css') );
-
+    llxHeader('', $langs->trans('MapWareHouse'),'','',0,0,array('/warehousepath/js/map.js','/warehousepath/lib/pathfinding/pathfinding-browser.min.js'),array('/warehousepath/css/style.css') );
 
     if(GETPOST('fk_product')) {
 
@@ -67,6 +66,17 @@
 
 
             Warehousepath::showMap($wh);
+
+            $position = Warehousepath::getPath($wh);
+
+            //TODO poc
+            ?>
+            <script type="text/javascript">
+            	getPath(<?php echo $fk_wh.','.$position['start'][1].','.$position['start'][0].',8,3'; ?>);
+            	getPath(<?php echo $fk_wh.',8,3,12,4'; ?>);
+            	getPath(<?php echo $fk_wh.',12,4,'.$position['end'][1].','.$position['end'][0]; ?>);
+            </script>
+            <?php
         }
 
 

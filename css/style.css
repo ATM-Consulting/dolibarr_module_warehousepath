@@ -9,3 +9,9 @@
 	height:30px;
 	
 }
+.walk-here {
+	
+		background: url('../img/foot.png') no-repeat;
+		background-size: 15px;
+		background-position: center; 
+}
