@@ -9,7 +9,7 @@
     dol_include_once('/product/class/product.class.php');
     dol_include_once('/core/lib/product.lib.php');
 
-    llxHeader('', $langs->trans('MapWareHouse'),'','',0,0,array('/warehousepath/js/map.js','/warehousepath/lib/pathfinding/pathfinding-browser.min.js'),array('/warehousepath/css/style.css') );
+    llxHeader('', $langs->trans('MapWareHouse'),'','',0,0,array('/warehousepath/js/map.js.php','/warehousepath/js/ga.js','/warehousepath/lib/pathfinding/pathfinding-browser.min.js'),array('/warehousepath/css/style.css') );
 
     if(GETPOST('fk_product')) {
 
@@ -29,19 +29,19 @@
 
         foreach($product->stock_warehouse as $fk_wh=>$data) {
 
-            card($fk_wh, false);
+            card($fk_wh, $product->id, 0,false);
 
         }
 
     }
     else {
-        card(GETPOST('fk_warehouse'));
+        card(GETPOST('fk_warehouse'),0,GETPOST('fk_shipping'));
     }
 
 
     llxFooter();
 
-    function card($fk_wh, $dolbanner=true) {
+    function card($fk_wh, $fk_product = 0,$fk_shipping = 0, $dolbanner=true) {
         global $db,$conf,$user,$langs;
 
 
@@ -65,18 +65,42 @@
             }
 
 
-            Warehousepath::showMap($wh);
+            Warehousepath::showMap($wh, $fk_product);
 
-            $position = Warehousepath::getPath($wh);
+            if($fk_shipping>0) {
 
-            //TODO poc
-            ?>
-            <script type="text/javascript">
-            	getPath(<?php echo $fk_wh.','.$position['start'][1].','.$position['start'][0].',8,3'; ?>);
-            	getPath(<?php echo $fk_wh.',8,3,12,4'; ?>);
-            	getPath(<?php echo $fk_wh.',12,4,'.$position['end'][1].','.$position['end'][0]; ?>);
-            </script>
-            <?php
+                   echo '<div style="float:left"><ul id="products">';
+
+                   dol_include_once('/expedition/class/expedition.class.php');
+
+                   $e=new Expedition($db);
+                   $e->fetch($fk_shipping);
+
+                   $TProduct = array();
+
+                   foreach($e->lines as $line) {
+                        $TProduct[] = $line->fk_product;
+                   }
+
+                   echo '</ul></div>';
+
+
+                   $position = Warehousepath::getPath($wh, $TProduct);
+
+                   $nb = count($position);
+                   var_dump($position,$nb);
+            	echo '<script type="text/javascript">'."\n";
+            	echo 'mapOptimizeRoute('.json_encode($position).');'."\n";
+
+				/*for($i=1;$i<$nb;$i++) {
+				        echo ' drawPath('.$wh->id.','.$position[$i-1][2].','.$position[$i-1][1].','.$position[$i][2].','.$position[$i][1].');'."\n";
+				}*/
+
+				echo '</script>';
+            }
+
+
+
         }
 
 

@@ -12,6 +12,12 @@
         $fk_product=GETPOST('fk_product');
         $type = $fk_product>0 ? Warehousepath::PRODUCT : Warehousepath::BLOCK;
 
-        echo Warehousepath::setBlock(GETPOST('fk_warehouse'), GETPOST('row'), GETPOST('col'), GETPOST('is_block') > 0, $type, $fk_product);
+        echo Warehousepath::setBlock(GETPOST('fk_warehouse'), GETPOST('row'), GETPOST('col'), $type, $fk_product);
 
+    }
+    else if($put == 'delete-block') {
+        $fk_product=GETPOST('fk_product');
+        $type = $fk_product>0 ? Warehousepath::PRODUCT : Warehousepath::BLOCK;
+
+        echo Warehousepath::deleteBlock(GETPOST('fk_warehouse'), GETPOST('row'), GETPOST('col'), $type, $fk_product);
     }

@@ -59,30 +59,18 @@ class Actionswarehousepath
 	 * @param   HookManager     $hookmanager    Hook manager propagated to allow calling another hook
 	 * @return  int                             < 0 on error, 0 on success, 1 to replace standard code
 	 */
-	function doActions($parameters, &$object, &$action, $hookmanager)
+	function addMoreActionsButtons($parameters, &$object, &$action, $hookmanager)
 	{
-		$error = 0; // Error counter
-		$myvalue = 'test'; // A result value
+	    if (in_array('expeditioncard', explode(':', $parameters['context'])))
+	    {
+	        global $langs;
 
-		print_r($parameters);
-		echo "action: " . $action;
-		print_r($object);
+	        $langs->load('warehousepath@warehousepath');
+	        if ($object->statut<=1) {
 
-		if (in_array('somecontext', explode(':', $parameters['context'])))
-		{
-		  // do something only for the context 'somecontext'
-		}
+	            echo '<a target="_blank" href="'.dol_buildpath('/warehousepath/map.php',1).'?fk_warehouse='.$object->fk_entrepot.'&fk_shipping='.$object->id.'" class="butAction">'.$langs->trans('SearchProductsInWarehouse').'</a>';
 
-		if (! $error)
-		{
-			$this->results = array('myreturn' => $myvalue);
-			$this->resprints = 'A text to show';
-			return 0; // or return 1 to replace standard code
-		}
-		else
-		{
-			$this->errors[] = 'Error message';
-			return -1;
+	        }
 		}
 	}
 }

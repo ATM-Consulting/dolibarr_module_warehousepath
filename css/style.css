@@ -1,5 +1,6 @@
 .grid-row {
 	display:flex;
+	padding:0 0 0 0;
 	
 }
 .grid-cell {
@@ -7,11 +8,14 @@
 	border:1px solid #ccc;
 	width:30px;
 	height:30px;
-	
+	padding:0 0 0 0;
 }
 .walk-here {
 	
 		background: url('../img/foot.png') no-repeat;
 		background-size: 15px;
 		background-position: center; 
+}
+.map {
+	padding:10px 20px;
 }
