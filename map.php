@@ -68,7 +68,11 @@
             Warehousepath::showMap($wh, $fk_product);
 
             if($fk_shipping>0) {
-
+                    ?>
+                    <script type="text/javascript">
+            			var fk_shipping = <?php echo $fk_shipping ?>;
+                    </script>
+                    <?php
                    echo '<div style="float:left"><ul id="products">';
 
                    dol_include_once('/expedition/class/expedition.class.php');
@@ -88,15 +92,10 @@
                    $position = Warehousepath::getPath($wh, $TProduct);
 
                    $nb = count($position);
-                   var_dump($position,$nb);
-            	echo '<script type="text/javascript">'."\n";
-            	echo 'mapOptimizeRoute('.json_encode($position).');'."\n";
 
-				/*for($i=1;$i<$nb;$i++) {
-				        echo ' drawPath('.$wh->id.','.$position[$i-1][2].','.$position[$i-1][1].','.$position[$i][2].','.$position[$i][1].');'."\n";
-				}*/
-
-				echo '</script>';
+                   echo '<script type="text/javascript">'."\n";
+            	   echo 'mapOptimizeRoute('.$wh->id.','.json_encode($position).');'."\n";
+    			   echo '</script>';
             }
 
 

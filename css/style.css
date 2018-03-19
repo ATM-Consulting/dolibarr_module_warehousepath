@@ -19,3 +19,11 @@
 .map {
 	padding:10px 20px;
 }
+.walk-step {
+	
+	text-align: center;
+	font-weight:bold;
+	
+	padding-top:5px;
+	height:25px;
+}

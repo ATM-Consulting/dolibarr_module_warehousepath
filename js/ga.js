@@ -213,14 +213,14 @@
 	        // Returns individuals route distance
 	        this.getDistance = function() {
 	            var totalDistance = 0;
-	console.log('getDistance', this.chromosome);
+	//console.log('getDistance', this.chromosome);
 	            for (index in this.chromosome) {
 	                var startNode = this.chromosome[index];
 	                var endNode = this.chromosome[0];
 	                if ((parseInt(index) + 1) < this.chromosome.length) {
 	                    endNode = this.chromosome[(parseInt(index) + 1)];
 	                }
-	
+	//console.log('getDistance2',startNode,endNode,durations);
 	                totalDistance += durations[startNode][endNode];
 	            }
 	            

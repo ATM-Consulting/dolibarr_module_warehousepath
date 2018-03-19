@@ -17,6 +17,8 @@ $(document).ready(function() {
 
 		$item = $(this);
 
+		if(typeof fk_shipping != 'undefined' ) return false;
+
 		var fk_warehouse = $item.closest('div[fk_warehouse]').attr('fk_warehouse');
 
 		var l_fk_product = (typeof fk_product != 'undefined' ) ? fk_product : 0;
@@ -82,7 +84,7 @@ $(document).ready(function() {
 
 });
 
-function drawPath(fk_warehouse, X1, Y1, X2, Y2 ) {
+function drawPath(fk_warehouse, X1, Y1, X2, Y2, step ) {
 
 	path = getPath( fk_warehouse, X1, Y1, X2, Y2 );
 
@@ -92,7 +94,14 @@ function drawPath(fk_warehouse, X1, Y1, X2, Y2 ) {
 
 		pair = path[x];
 
-		$map.find('div.grid-cell[col='+pair[0]+'][row='+pair[1]+']').addClass('walk-here');
+		if($map.find('div.grid-cell[col='+pair[0]+'][row='+pair[1]+']').html()=='') {
+    		if(step && x == path.length - 1 ) {
+    			$map.find('div.grid-cell[col='+pair[0]+'][row='+pair[1]+']').addClass('walk-step').append(step);
+    		}
+    		else {
+    			$map.find('div.grid-cell[col='+pair[0]+'][row='+pair[1]+']').addClass('walk-here');
+    		}
+		}
 	}
 
 }
@@ -177,41 +186,42 @@ function drawCells() {
 
 }
 
-function mapOptimizeRoute(nodes) {
-console.log(nodes, nodes.length);
+function mapOptimizeRoute(fk_warehouse, nodes) {
+console.log('mapOptimizeRoute', nodes, nodes.length);
+
+	for(origin in nodes) {
+		durations[origin]=[];
+		for(destination in nodes) {
+			path = getPath(fk_warehouse, nodes[origin][2], nodes[origin][1], nodes[destination][2], nodes[destination][1]);
+			distance = path.length - 1;
+			durations[origin][destination] = distance;
+
+		}
+
+	}
 
 	ga.getConfig();
     var pop = new ga.population();
     pop.initialize(nodes.length);
-    console.log('pop',pop);
     var route = pop.getFittest().chromosome;
-console.log('route',route);
 
-    ga.evolvePopulation(pop, function(update) {
+	var nb = route.length;
 
-        // Get route coordinates
-        var route = update.population.getFittest().chromosome;
-        var routeCoordinates = [];
-        for (index in route) {
-            routeCoordinates[index] = nodes[route[index]];
-        }
-        routeCoordinates[route.length] = nodes[route[0]];
+	var $map = $('div.map[fk_warehouse='+fk_warehouse+']');
+	origin = 0;
+	$map.find('div.grid-cell[col='+nodes[origin][2]+'][row='+nodes[origin][1]+']').addClass('walk-step').append('E');
+	destination = nodes.length - 1;
+	$map.find('div.grid-cell[col='+nodes[destination][2]+'][row='+nodes[destination][1]+']').addClass('walk-step').append('S');
 
-    }, function(result) {
-        // Get route
-        route = result.population.getFittest().chromosome;
+    for(var i=0;i<nb-1; i++) {
 
-        var waypts = [];
+		origin = route[i];
+		destination = route[i+1];
 
-        for (var i=1; i<route.length; i++) {
-            waypts.push({
-                location: nodes[route[i]],
-                stopover: true
-            });
-        }
+    	drawPath(fk_warehouse, nodes[origin][2], nodes[origin][1], nodes[destination][2], nodes[destination][1] , i + 1);
 
-        console.log(waypts,nodes);
-    });
+    }
+
 
 }
 
